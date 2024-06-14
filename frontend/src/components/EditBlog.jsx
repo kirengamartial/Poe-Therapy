@@ -3,7 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { editBlog } from '../slices/blogSlices/blogSlice';
-import {toast} from 'react-toastify'
+// import {toast} from 'react-toastify'
+import toast from 'react-hot-toast'
 import Spinner from './Spinner';
 
 const EditBlog = () => {

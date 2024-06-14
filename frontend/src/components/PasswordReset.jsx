@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import Spinner from './Spinner';
 import {useNavigate} from 'react-router-dom'
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import toast from 'react-hot-toast'
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');

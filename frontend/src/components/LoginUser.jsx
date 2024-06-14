@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCredentials } from '../slices/userSlices/authSlice';
 import { useLoginMutation, useGoogleLoginMutation } from '../slices/userSlices/userApiSlice';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import toast from 'react-hot-toast'
 import Spinner from './Spinner';
 import { FcGoogle } from 'react-icons/fc';
 import { useGoogleLogin } from '@react-oauth/google';

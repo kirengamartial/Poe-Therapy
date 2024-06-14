@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import {useDispatch, useSelector} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
 import { createBlog } from '../slices/blogSlices/blogSlice';
-import {toast} from 'react-toastify'
+// import {toast} from 'react-toastify'
+import toast from 'react-hot-toast'
 import Spinner from './Spinner'
 
 const AddBlog = () => {

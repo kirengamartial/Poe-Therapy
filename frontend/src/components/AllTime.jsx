@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { setTime, deleteTime } from '../slices/timeSlices/timeSlice';
 import { useDeleteTimeMutation } from '../slices/timeSlices/timeApiSlice';
 import { useDispatch } from 'react-redux';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import toast from 'react-hot-toast'
 import Spinner from './Spinner';
 
 const AllTime = () => {

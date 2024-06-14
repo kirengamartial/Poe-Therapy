@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setVideo, deleteVideo } from '../slices/videoSlices/videoSlice';
 import Spinner from './Spinner';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import toast from 'react-hot-toast'
 
 
 const AdminStudio = () => {

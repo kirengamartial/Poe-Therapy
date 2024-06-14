@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { setGallery, deleteGallery } from '../slices/gallerySlices/gallerySlice';
 import Spinner from './Spinner';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import toast from 'react-hot-toast'
 
 const Gallery = () => {
   const [photos, setPhotos] = useState([]);

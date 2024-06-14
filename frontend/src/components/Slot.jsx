@@ -4,7 +4,8 @@ import { createSlot } from '../slices/slotSlices/slotSlice';
 import { usePostSlotMutation } from '../slices/slotSlices/slotApiSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import Spinner from './Spinner';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import toast from 'react-hot-toast'
 
 const Slot = () => {
   const [name, setName] = useState('')

@@ -5,7 +5,8 @@ import logo from '../assets/POETHERAPY 6.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut } from '../slices/userSlices/authSlice';
 import { useLogOutMutation } from '../slices/userSlices/userApiSlice';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import toast from 'react-hot-toast'
 
 const Hero = () => {
   const [isAdminDropdownOpen, setIsAdminDropdownOpen] = useState(false);
@@ -80,7 +81,7 @@ const Hero = () => {
             <nav
               className={`${
                 isMenuOpen ? 'flex' : 'hidden'
-              } text-sm md:flex  flex-col md:flex-row text-sm items-center justify-center fixed top-0 left-0 w-full h-full md:h-auto bg-gray-900 bg-opacity-90 md:bg-transparent md:static md:w-auto md:overflow-visible md:text-sm`}
+              } text-sm md:flex  flex-col md:flex-row items-center justify-center fixed top-0 left-0 w-full h-full md:h-auto bg-gray-900 bg-opacity-90 md:bg-transparent md:static md:w-auto md:overflow-visible md:text-sm`}
               style={{marginTop: "-35px"}}
             >
               <button
@@ -109,28 +110,28 @@ const Hero = () => {
                   className="block md:inline-block text-white hover:text-gray-400 transition-colors duration-300 mb-4 md:mb-0 md:mr-6 py-2"
                        onClick={toggleMenu}
                    >
-                    studio
+                    Studio
               </Link>
               <Link
                 to="/gallery"
                 className="block md:inline-block text-white hover:text-gray-400 transition-colors duration-300 mb-4 md:mb-0 md:mr-6 py-2"
                 onClick={toggleMenu}
               >
-                gallery
+                Gallery
               </Link>
               <Link
                 to="/all-slot"
                 className="block md:inline-block text-white hover:text-gray-400 transition-colors duration-300 mb-4 md:mb-0 md:mr-6 py-2"
                 onClick={toggleMenu}
               >
-                slots
+                Slots
               </Link>
               <Link
                 to="/blogs"
                 className="block md:inline-block text-white hover:text-gray-400 transition-colors duration-300 mb-4 md:mb-0 md:mr-6 py-2"
                 onClick={toggleMenu}
               >
-                blogs
+                Blogs
               </Link>
               {userInfo && userInfo.isAdmin && (
                 <div
@@ -138,7 +139,7 @@ const Hero = () => {
                   onMouseEnter={toggleAdminDropdown}
                   onMouseLeave={toggleAdminDropdown}
                 >
-                  <span>admin</span>
+                  <span>Admin</span>
                   <div
                     className={`absolute z-10 bg-white text-gray-800 rounded-md shadow-lg py-2 mt-2 md:mt-0 ${
                       isAdminDropdownOpen ? '' : 'hidden'
@@ -153,35 +154,35 @@ const Hero = () => {
                       className="block px-4 py-2 hover:bg-gray-100 transition-colors duration-300"
                       onClick={toggleMenu}
                     >
-                      time
+                      Time
                     </Link>
                     <Link
                       to="/admin-all-slot"
                       className="block px-4 py-2 hover:bg-gray-100 transition-colors duration-300"
                       onClick={toggleMenu}
                     >
-                      slots
+                      Slots
                     </Link>
                     <Link
                       to="/admin-blog"
                       className="block px-4 py-2 hover:bg-gray-100 transition-colors duration-300"
                       onClick={toggleMenu}
                     >
-                      blog
+                      Blog
                     </Link>
                     <Link
                       to="/admin-studio"
                       className="block px-4 py-2 hover:bg-gray-100 transition-colors duration-300"
                       onClick={toggleMenu}
                     >
-                      studio
+                      Studio
                     </Link>
                     <Link
                       to="/admin-gallery"
                       className="block px-4 py-2 hover:bg-gray-100 transition-colors duration-300"
                       onClick={toggleMenu}
                     >
-                      gallery
+                      Gallery
                     </Link>
                   </div>
                 </div>
@@ -207,13 +208,13 @@ const Hero = () => {
                       className="block px-4 py-2 hover:bg-gray-100 transition-colors duration-300"
                       onClick={toggleMenu}
                     >
-                      profile
+                      Profile
                     </Link>
                     <button
                       onClick={handleLogout}
                       className="block px-4 py-2 hover:bg-gray-100 transition-colors duration-300"
                     >
-                      logout
+                      Logout
                     </button>
                   </div>
                 </div>
@@ -224,7 +225,7 @@ const Hero = () => {
                   className="text-white hover:text-gray-400 transition-colors duration-300"
                   onClick={toggleMenu}
                 >
-                  login
+                  Login
                 </Link>
               )}
             </nav>

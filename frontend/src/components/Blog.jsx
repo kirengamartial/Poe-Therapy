@@ -4,7 +4,8 @@ import { usePostCommentMutation } from '../slices/commentSlices/commentApiSlice'
 import { setComment, createComment } from '../slices/commentSlices/commentSlice';
 import Spinner from './Spinner';
 import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import toast from 'react-hot-toast'
 
 const Blog = () => {
   const [stars, setStars] = useState('');

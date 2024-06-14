@@ -4,7 +4,8 @@ import logo from '../assets/A2W BLACK 1.png';
 import { setVideo } from '../slices/videoSlices/videoSlice';
 import Card from '../components/Card';
 import Spinner from '../components/Spinner';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import toast from 'react-hot-toast'
 
 const StudioPage = () => {
   const [videos, setVideos] = useState([]);

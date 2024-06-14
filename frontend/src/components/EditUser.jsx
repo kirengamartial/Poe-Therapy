@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { getCredentials } from '../slices/userSlices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import toast from 'react-hot-toast'
 import Spinner from './Spinner';
 import { useNavigate } from 'react-router-dom';
 

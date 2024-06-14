@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import {useDispatch} from 'react-redux'
 import {useNavigate} from 'react-router-dom'
 import { createVideo } from '../slices/videoSlices/videoSlice';
-import {toast} from 'react-toastify'
+// import {toast} from 'react-toastify'
+import toast from 'react-hot-toast'
 import Spinner from './Spinner'
 
 const AddStudio = () => {

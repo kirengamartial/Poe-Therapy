@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { setBlog } from '../slices/blogSlices/blogSlice';
 import { useDispatch } from 'react-redux';
 import Spinner from './Spinner';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import toast from 'react-hot-toast'
 
 const Blogs = () => {
   const [blogs, setBlogs] = useState([]);

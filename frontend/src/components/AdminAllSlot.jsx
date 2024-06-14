@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSlot, deleteSlot } from '../slices/slotSlices/slotSlice';
 import Spinner from './Spinner';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import toast from 'react-hot-toast'
 
 const AdminAllSlot = () => {
     const [slot, setSlots] = useState([]);

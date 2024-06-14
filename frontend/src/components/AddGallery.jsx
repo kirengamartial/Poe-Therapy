@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { createGallery } from '../slices/gallerySlices/gallerySlice';
 import { usePostImageMutation } from '../slices/gallerySlices/galleryApiSlice';
-import {toast} from 'react-toastify'
+// import {toast} from 'react-toastify'
+import toast from 'react-hot-toast'
 import Spinner from './Spinner'
 
 const AddGallery = () => {

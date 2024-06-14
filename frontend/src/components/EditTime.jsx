@@ -6,7 +6,8 @@ import { editTime } from '../slices/timeSlices/timeSlice';
 import { useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
 import Spinner from './Spinner';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import toast from 'react-hot-toast'
 
 const EditTime = () => {
     const [Date, setDate] = useState('');

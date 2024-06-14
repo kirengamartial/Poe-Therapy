@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logOut } from '../slices/userSlices/authSlice';
 import logo from '../assets/POETHERAPY 6.png';
 import { useLogOutMutation } from '../slices/userSlices/userApiSlice';
-import { toast } from 'react-toastify';
+// import { toast } from 'react-toastify';
+import toast from 'react-hot-toast'
 
 const Header = () => {
   const [isAdminDropdownOpen, setIsAdminDropdownOpen] = useState(false);
