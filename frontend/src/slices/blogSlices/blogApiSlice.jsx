@@ -27,7 +27,13 @@ const blogApiSlice = apiSlice.injectEndpoints({
                 url: `${BASE_URL}/delete-blog/${id}`,
                 method: 'DELETE',
             })
-        })
+        }),
+        updateBlog: builder.mutation({
+            query: (id) => ({
+                url: `${BASE_URL}/delete-blog/${id}`,
+                method: 'DELETE',
+            })
+        }),
     })
 })
 

@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCredentials } from '../slices/userSlices/authSlice';
 import { useRegisterMutation, useGoogleLoginMutation } from '../slices/userSlices/userApiSlice';
-// import { toast } from 'react-toastify';
 import toast from 'react-hot-toast'
 import Spinner from './Spinner';
 import { FcGoogle } from 'react-icons/fc'; 
@@ -60,14 +59,8 @@ const RegisterUser = () => {
       setIsLoading(true);
       try {
         const accessToken = response.access_token;
-        const res = await fetch('/api/users/login-google', {
-          method: "POST",
-          credentials: "include",
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({accessToken})
-        });
-        const data = await res.json();
-        dispatch(getCredentials(data));
+        const res = await googleRegister(accessToken).unwrap()
+        dispatch(getCredentials({...res}));
         toast.success('register successfully');
         navigate('/');
       } catch (err) {

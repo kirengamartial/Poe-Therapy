@@ -23,6 +23,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 body: data
             })
         }),
+        editUser: builder.mutation({
+            query: (data) => ({
+                url: `${BASE_URL}/edit`,
+                method: 'PUT',
+                body: data
+            })
+        }),
         googleLogin: builder.mutation({
             query: (data) => ({
                 url:`${BASE_URL}/login-google`,
@@ -33,4 +40,4 @@ export const userApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const {useRegisterMutation, useLogOutMutation, useLoginMutation, useGoogleLoginMutation} = userApiSlice
+export const {useRegisterMutation, useLogOutMutation, useLoginMutation, useGoogleLoginMutation, useEditUserMutation} = userApiSlice

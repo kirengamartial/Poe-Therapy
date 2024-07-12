@@ -7,10 +7,11 @@ import Spinner from '../components/Spinner';
 const GalleryPage = () => {
   const dispatch = useDispatch();
 
-  const {data: photos, isLoading, error} = useGetImagesQuery()
+  const {data: photos, isLoading, error, refetch} = useGetImagesQuery()
 
   useEffect(() => {
     if(photos) {
+      refetch()
       dispatch(setGallery(photos))
     }
   }, [photos]);

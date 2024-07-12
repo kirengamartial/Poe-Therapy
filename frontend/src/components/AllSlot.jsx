@@ -9,7 +9,7 @@ import Spinner from './Spinner';
 const AllSlot = () => {
   const dispatch = useDispatch();
 
-  const {data:time, isLoading, error} = useAllTimeQuery()
+  const {data:time, isLoading, error, refetch} = useAllTimeQuery()
   const {userInfo} = useSelector(state => state.auth)
 
   const handleClick = () => {
@@ -18,6 +18,7 @@ const AllSlot = () => {
 
   useEffect(() => {
     if(time) {
+      refetch()
       dispatch(setTime(time))
     }
   }, [dispatch, time]);

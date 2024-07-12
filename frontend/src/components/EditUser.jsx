@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { getCredentials } from '../slices/userSlices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
-// import { toast } from 'react-toastify';
+import { useEditUserMutation } from '../slices/userSlices/userApiSlice';
 import toast from 'react-hot-toast'
 import Spinner from './Spinner';
 import { useNavigate } from 'react-router-dom';
@@ -16,6 +16,7 @@ const UserProfile = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [editUser] = useEditUserMutation()
 
   const {userInfo} = useSelector(state => state.auth)
 
@@ -57,15 +58,9 @@ const UserProfile = () => {
               email,
               password
             }
-            const res = await fetch('/api/users/edit', {
-            method: 'PUT',
-            headers: {"Content-Type": "application/json"},
-            credentials: "include",
-            body: JSON.stringify(data)
-          })
+            const res = await editUser(data).unwrap()
             
-          const myData = await res.json()
-          dispatch(getCredentials({...myData}))
+          dispatch(getCredentials({...res}))
           toast.success("edited successfully")
           navigate('/')
           }else {

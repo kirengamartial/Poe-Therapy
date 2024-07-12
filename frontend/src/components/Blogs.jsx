@@ -6,11 +6,12 @@ import { useDispatch } from 'react-redux';
 import Spinner from './Spinner';
 
 const Blogs = () => {
-  const {data: blogs, isLoading, error} = useAllBlogQuery()
+  const {data: blogs, isLoading, error, refetch} = useAllBlogQuery()
   const dispatch = useDispatch();
 
   useEffect(() => {
    if(blogs) {
+    refetch()
     dispatch(setBlog(blogs))
    }
   }, [dispatch]);

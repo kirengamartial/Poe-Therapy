@@ -11,8 +11,8 @@ const commentApiSlice = apiSlice.injectEndpoints({
             })
         }),
         getAllComment: builder.query({
-            query: (data) => ({
-                url: `${BASE_URL}/all-comment`,
+            query: () => ({
+                url: `${BASE_URL}/get-comment`,
                 method: 'GET'
             })
         }),

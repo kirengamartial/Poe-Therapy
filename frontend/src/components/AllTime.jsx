@@ -1,54 +1,58 @@
-import React, {useState, useEffect} from 'react'
+import React, {useEffect} from 'react'
 import { Link } from 'react-router-dom';
 import { setTime, deleteTime } from '../slices/timeSlices/timeSlice';
 import { useDeleteTimeMutation } from '../slices/timeSlices/timeApiSlice';
 import { useDispatch } from 'react-redux';
-// import { toast } from 'react-toastify';
+import { useAllTimeQuery } from '../slices/timeSlices/timeApiSlice';
 import toast from 'react-hot-toast'
 import Spinner from './Spinner';
 
 const AllTime = () => {
-  const [time, setTimes] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
 
   const dispatch = useDispatch()
 
   const [deleteTimes] = useDeleteTimeMutation()
+  const {data: time, error, refetch, isLoading} = useAllTimeQuery()
 
   useEffect(() => {
-    const handleTime = async() => {
-      setIsLoading(true)
-      try {
-        const res = await fetch('/api/time/all-time', {
-          method: 'GET',   
-        })
-        const data = await res.json()
-        if(data) {
-          setTimes(data)
-          dispatch(setTime(data))   
-        }
-      } catch (error) {
-        console.log(error)
-      }finally {
-        setIsLoading(false)
-      }
+    if(time) {
+      refetch()
+      dispatch(setTime(time))
     }
-    handleTime()
-  }, [dispatch])
+  }, [dispatch, time])
 
   const handleDelete = async(id) => {
-    setIsLoading(true)
     try {
       await deleteTimes(id).unwrap()
        dispatch(deleteTime(id))
-       setTimes(time.filter(item => item._id !== id));
+       refetch()
        toast.success('deleted successfully')
     } catch (err) {
       toast.error(err?.data?.message || err.error)
       console.log(err)
-    }finally {
-      setIsLoading(false)
     }
+  }
+
+  if (error) {
+    return (
+      <div className="max-w-md mx-auto mt-8 p-4 bg-red-50 border-l-4 border-red-500 rounded-md shadow-md">
+        <div className="flex items-center">
+          <div className="flex-shrink-0">
+            <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <div className="ml-3">
+            <h3 className="text-sm font-medium text-red-800">Error Occurred</h3>
+            <div className="mt-2 text-sm text-red-700">
+              <pre className="whitespace-pre-wrap break-words">
+                {JSON.stringify(error, null, 2)}
+              </pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
  
   return isLoading ? <Spinner/> : (
@@ -74,7 +78,7 @@ const AllTime = () => {
               </tr>
             </thead>
             <tbody className="text-gray-600 text-sm font-light">
-              {time.map((item) => (
+              {time && time.map((item) => (
                 <tr key={item._id} className="border-b border-gray-200 hover:bg-gray-100">
                   <td className="py-3 px-6 text-left">{item._id}</td>
                   <td className="py-3 px-6 text-left">{item.time}</td>

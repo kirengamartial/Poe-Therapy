@@ -17,7 +17,13 @@ export const galleryApiSlice = apiSlice.injectEndpoints({
         method: 'GET'
       })
     }),
+    deleteImage: builder.mutation({
+      query: (id) => ({
+        url: `${BASE_URL}/delete-image/${id}`,
+        method: 'DELETE'
+      })
+    }),
   })
 })
 
-export const { usePostImageMutation, useGetImagesQuery } = galleryApiSlice
+export const { usePostImageMutation, useGetImagesQuery, useDeleteImageMutation} = galleryApiSlice

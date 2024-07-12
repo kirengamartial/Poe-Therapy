@@ -10,10 +10,11 @@ import Spinner from '../components/Spinner';
 const StudioPage = () => {
   const dispatch = useDispatch();
 
-const {data: videos, error, isLoading} = useGetVideosQuery()
+const {data: videos, error, isLoading, refetch} = useGetVideosQuery()
 
   useEffect(() => {
     if(videos){
+      refetch()
       dispatch(setVideo(videos))
     }
   }, [videos]);
