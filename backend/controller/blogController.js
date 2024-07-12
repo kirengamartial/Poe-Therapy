@@ -11,6 +11,17 @@ const getBlog = async(req, res) => {
         res.status(500).json({message: error})
     }
 }
+const getSingleBlog = async(req, res) => {
+    try {
+      const {id} = req.params
+      const blog = await Blog.findById(id)
+      res.status(200).json(blog)   
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error})
+    }
+}
+
 const addBlog = async(req, res) => {
 
 upload(req, res, async(err) => {
@@ -118,6 +129,7 @@ const deleteBlog = async(req, res) => {
 
 export {
     getBlog,
+    getSingleBlog,
     addBlog,
     editBlog,
     deleteBlog

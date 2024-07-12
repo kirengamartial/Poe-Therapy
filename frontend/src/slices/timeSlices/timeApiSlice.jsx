@@ -10,6 +10,12 @@ const timeApiSlice = apiSlice.injectEndpoints({
                 body: data
             })
         }),
+        allTime: builder.query({
+            query: () => ({
+                url: `${BASE_URL}/all-time`,
+                method: 'GET'
+            })
+        }),
         deleteTime: builder.mutation({
             query: (id) => ({
                 url: `${BASE_URL}/delete-time/${id}`,
@@ -19,4 +25,4 @@ const timeApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const {usePostTimeMutation, useDeleteTimeMutation} = timeApiSlice
+export const {usePostTimeMutation, useDeleteTimeMutation, useAllTimeQuery} = timeApiSlice

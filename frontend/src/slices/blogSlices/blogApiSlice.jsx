@@ -10,6 +10,18 @@ const blogApiSlice = apiSlice.injectEndpoints({
                 body: data
             })
         }),
+        allBlog: builder.query({
+            query: () => ({
+                url: `${BASE_URL}/all-blog`,
+                method: 'GET'
+            })
+        }),
+        getSingleBlog: builder.query({
+            query: (id) => ({
+                url: `${BASE_URL}/single-blog/${id}`,
+                method: 'GET'
+            })
+        }),
         deleteBlog: builder.mutation({
             query: (id) => ({
                 url: `${BASE_URL}/delete-blog/${id}`,
@@ -19,4 +31,4 @@ const blogApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const {usePostBlogMutation, useDeleteBlogMutation} = blogApiSlice
+export const {usePostBlogMutation, useDeleteBlogMutation, useAllBlogQuery, useGetSingleBlogQuery} = blogApiSlice

@@ -9,8 +9,14 @@ const commentApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: data
             })
-        })
+        }),
+        getAllComment: builder.query({
+            query: (data) => ({
+                url: `${BASE_URL}/all-comment`,
+                method: 'GET'
+            })
+        }),
     })
 })
 
-export const {usePostCommentMutation} = commentApiSlice
+export const {usePostCommentMutation, useGetAllCommentQuery} = commentApiSlice

@@ -10,6 +10,12 @@ const slotApiSlice = apiSlice.injectEndpoints({
                 body: data
             })
         }),
+        getAllSlot: builder.query({
+            query: () => ({
+                url: `${BASE_URL}/all-slot`,
+                method: 'GET'
+            })
+        }),
         deleteSlot: builder.mutation({
             query: (id) => ({
                 url: `${BASE_URL}/delete-slot/${id}`,
@@ -19,4 +25,4 @@ const slotApiSlice = apiSlice.injectEndpoints({
     })
 })
 
-export const {usePostSlotMutation, useDeleteSlotMutation} = slotApiSlice
+export const {usePostSlotMutation, useDeleteSlotMutation, useGetAllSlotQuery} = slotApiSlice

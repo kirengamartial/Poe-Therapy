@@ -10,8 +10,14 @@ export const galleryApiSlice = apiSlice.injectEndpoints({
         method: 'POST',
         body: formData,
       })
-    })
+    }),
+    getImages: builder.query({
+      query: () => ({
+        url: `${BASE_URL}/all-image`,
+        method: 'GET'
+      })
+    }),
   })
 })
 
-export const { usePostImageMutation } = galleryApiSlice
+export const { usePostImageMutation, useGetImagesQuery } = galleryApiSlice

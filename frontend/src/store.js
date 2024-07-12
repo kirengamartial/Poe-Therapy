@@ -17,7 +17,7 @@ const store = configureStore({
         blog: blogSlice,
         video: videoSlice,
         comment: commentSlice,
-        [authSlice.reducerPath]: apiSlice.reducer
+        [apiSlice.reducerPath]: apiSlice.reducer
     },
     middleware: (getDefaultMiddleware) =>getDefaultMiddleware().concat(apiSlice.middleware),
     devTools: true
