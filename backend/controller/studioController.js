@@ -11,6 +11,16 @@ const getStudio = async(req, res) => {
         res.status(500).json({message: error})
     }
 }
+const getSingleStudio = async(req, res) => {
+    try {
+      const {id} = req.params
+      const studio = await Studio.findById(id)
+      res.status(200).json(studio)   
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({message: error})
+    }
+}
 
 const addStudio = async(req, res) => {
  upload(req, res, async(err) => {
@@ -117,6 +127,7 @@ const deleteStudio = async(req, res) => {
 export {
   getStudio,
   addStudio,
+  getSingleStudio,
   editStudio,
   deleteStudio
 }

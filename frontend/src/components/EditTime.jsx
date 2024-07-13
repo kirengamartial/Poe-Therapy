@@ -1,47 +1,34 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaCalendarAlt } from 'react-icons/fa';
-import { editTime } from '../slices/timeSlices/timeSlice';
-import { useDispatch } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useUpdateTimeMutation } from '../slices/timeSlices/timeApiSlice';
 import Spinner from './Spinner';
-// import { toast } from 'react-toastify';
 import toast from 'react-hot-toast'
 
 const EditTime = () => {
     const [Date, setDate] = useState('');
     const [Time, setTime] = useState('');
-   const [isLoading, setIsLoading] = useState(false)
    
    const {id} = useParams()
-   const dispatch = useDispatch()
    const navigate = useNavigate()
+
+   const [updateTime, {isLoading, error}] = useUpdateTimeMutation()
   
     const handleSubmit = async(e) => {
       e.preventDefault();
-      setIsLoading(true)
       try {
         const formattedDate = Date ? Date.toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) : '';
 
       const date = formattedDate.split(',').join('')
       const time = Time
-      const res = await fetch(`/api/time/edit-time/${id}`, {
-          method: 'PUT',
-          body: JSON.stringify({date, time}),
-          headers: {"Content-Type": "application/json"},
-          credentials: "include"
-        })
-
-      const data = await res.json()
-      dispatch(editTime(data))
+      await updateTime({date, time, id}).unwrap()
       toast.success('edited successfully')
       navigate('/all-time')
       } catch (err) {
         toast.error(err?.data?.message || err.error)
         console.log(err)
-      }finally {
-        setIsLoading(false)
       }
     };
     return (
@@ -61,11 +48,26 @@ const EditTime = () => {
                   value={Time}
                   onChange={(e) => setTime(e.target.value)}
                   className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
-                  required
+                 
                 >
                   <option value="" className='text-red'>Select Time</option>
+                  <option value="8PM">8AM</option>
+                  <option value="9AM">9AM</option>
+                  <option value="10AM">10AM</option>
+                  <option value="11AM">11AM</option>
+                  <option value="12PM">12PM</option>
+                  <option value="1PM">1PM</option>
+                  <option value="2PM">2PM</option>
+                  <option value="3PM">3PM</option>
+                  <option value="4PM">4PM</option>
                   <option value="5PM">5PM</option>
-                  <option value="2AM">2AM</option>
+                  <option value="6PM">6PM</option>
+                  <option value="7PM">7PM</option>
+                  <option value="8PM">8PM</option>
+                  <option value="9PM">9PM</option>
+                  <option value="10PM">10PM</option>
+                  <option value="11PM">11PM</option>
+                  <option value="12AM">12AM</option>
                 </select>
                 <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                   <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -83,7 +85,7 @@ const EditTime = () => {
                 placeholderText="Pick Date"
                 dateFormat="EEEE dd MMM yyyy"
                 className="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline" 
-                required
+               
               />
             </div>
             {isLoading && <Spinner/>}

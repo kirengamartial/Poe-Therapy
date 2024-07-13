@@ -29,12 +29,13 @@ const blogApiSlice = apiSlice.injectEndpoints({
             })
         }),
         updateBlog: builder.mutation({
-            query: (id) => ({
-                url: `${BASE_URL}/delete-blog/${id}`,
-                method: 'DELETE',
+            query: (data) => ({
+                url: `${BASE_URL}/edit-blog/${data.id}`,
+                method: 'PUT',
+                body: data.formData
             })
         }),
     })
 })
 
-export const {usePostBlogMutation, useDeleteBlogMutation, useAllBlogQuery, useGetSingleBlogQuery} = blogApiSlice
+export const {usePostBlogMutation, useDeleteBlogMutation, useAllBlogQuery, useGetSingleBlogQuery, useUpdateBlogMutation} = blogApiSlice
