@@ -1,5 +1,6 @@
 import React from 'react'
 
+
 const About = () => {
   return (
     <section className='flex justify-center mb-10'>
