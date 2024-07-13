@@ -1,6 +1,5 @@
 import React from 'react'
 
-
 const About = () => {
   return (
     <section className='flex justify-center mb-10'>
@@ -24,7 +23,7 @@ const About = () => {
           </div>
           <div className="w-full lg:w-2/3 lg:pl-8">
             <p className="text-sm leading-relaxed">
-              Welcome to our studio, where every sound is crafted into an immersive experience. Step into a sanctuary of creativity, where sonic dreams are born and brought to life. Equipped with state-of-the-art technology and a team passionate about perfecting your vision, we offer an inspiring environment where every note, beat, and melody finds its true essence. Whether you're a seasoned professional or a budding artist, our studio is your canvas, awaiting your unique touch to create something truly extraordinary. Join us and let your music journey begin.
+              Welcome to our studio, where every sound is crafted into an immersive experience. Step into a sanctuary of creativity, where sonic dreams are born and brought to life. Equipped with state-of-the-art technology and a team passionate about perfecting your vision, we offer an inspiring environment where every note, beat, and melody finds its true essence. Whether you're a seasoned professional or a budding artist, our studio is your canvas, awaiting your unique touch to create something truly extraordinary. Join us and let your music journey begin now.
             </p>
           </div>
         </div>
