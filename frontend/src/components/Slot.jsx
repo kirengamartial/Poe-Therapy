@@ -1,62 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { createSlot } from '../slices/slotSlices/slotSlice';
 import { usePostSlotMutation } from '../slices/slotSlices/slotApiSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
+import { useUpdateTimeMutation } from '../slices/timeSlices/timeApiSlice';
 import Spinner from './Spinner';
 import toast from 'react-hot-toast'
 
 const Slot = () => {
-  const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
   const [date, setDate] = useState('')
   const [time, setTime] = useState('')
   const [recordingType, setRecordingType] = useState('');
   const [sessionDuration, setSessionDuration] = useState('');
-  const [isLoading, setIsLoading] = useState(false)
 
   const {id} = useParams()
-  const dispatch = useDispatch() 
   const navigate = useNavigate()
 
   const {userTime} = useSelector(state => state.time)
-  const {userInfo} = useSelector(state => state.auth)
-  const [postSlot] = usePostSlotMutation()
+  const [postSlot, {isLoading, error}] = usePostSlotMutation()
+  const [updateTime] = useUpdateTimeMutation()
 
   useEffect(() => {
    userTime.map(item => {
     if(item._id === id) {
       setDate(item.date)
       setTime(item.time)
-      setName(userInfo.name)
-      setEmail(userInfo.email)
     }
    })
-  },[userTime, userInfo])
+  },[userTime])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true)
     try {
-     const response =  await fetch(`/api/time/edit-time/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify({ status: false }),
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
-  
-      if(response.ok) {
+    const response =  await updateTime({id, status: false}).unwrap()
+      if(response) {
         const slotData = {
-          name,
-          email,
           date,
           time,
           recording_type: recordingType,
           session_duration: sessionDuration,
         };
     
-        const res = await postSlot(slotData).unwrap();
-        dispatch(createSlot({ ...res }));
+        await postSlot(slotData).unwrap();
         toast.success('Slot created successfully');
         navigate('/all-slot');
       }
@@ -64,10 +48,29 @@ const Slot = () => {
     } catch (err) {
       console.log(err);
       toast.error(err?.data?.message || err.error);
-    }finally {
-      setIsLoading(false)
     }
   };
+  if (error) {
+    return (
+      <div className="max-w-md mx-auto mt-8 p-4 bg-red-50 border-l-4 border-red-500 rounded-md shadow-md">
+        <div className="flex items-center">
+          <div className="flex-shrink-0">
+            <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <div className="ml-3">
+            <h3 className="text-sm font-medium text-red-800">Error Occurred</h3>
+            <div className="mt-2 text-sm text-red-700">
+              <pre className="whitespace-pre-wrap break-words">
+                {JSON.stringify(error, null, 2)}
+              </pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="bg-white flex justify-center mb-10">
       <div className="w-9/12 mt-2">

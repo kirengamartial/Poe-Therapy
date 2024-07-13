@@ -9,11 +9,11 @@ try {
  res.status(500).json({message: error})   
 }
 }
-const getSingleSlot = async(req, res) => {
+const getUserSlots = async(req, res) => {
     try {
-         const {email} = req.body
-        const slot = await Slot.findOne({email})
-        res.status(200).json(slot) 
+        const {email} = req.user
+        const slots = await Slot.find({email})
+        res.status(200).json(slots) 
     } catch (error) {
         console.log(error)
         res.status(500).json({message: 'server error'})
@@ -22,7 +22,8 @@ const getSingleSlot = async(req, res) => {
 
 const addSlot = async(req,res) => {
 try {
-    const {name,email, date, time, recording_type,  session_duration} = req.body
+    const {date, time, recording_type,  session_duration} = req.body
+    const {name, email} = req.user
 
     const slot = await Slot.create({
         name,
@@ -86,6 +87,6 @@ try {
 export {
     getSlot,
     addSlot,
-    getSingleSlot,
+    getUserSlots,
     deleteSlot
 }

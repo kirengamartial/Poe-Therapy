@@ -36,8 +36,15 @@ export const userApiSlice = apiSlice.injectEndpoints({
                 method: 'POST',
                 body: data
             })
-        })
+        }),
+        googleRegister: builder.mutation({
+            query: (data) => ({
+                url:`${BASE_URL}/register-google`,
+                method: 'POST',
+                body: data
+            })
+        }),
     })
 })
 
-export const {useRegisterMutation, useLogOutMutation, useLoginMutation, useGoogleLoginMutation, useEditUserMutation} = userApiSlice
+export const {useRegisterMutation, useLogOutMutation, useLoginMutation, useGoogleLoginMutation, useEditUserMutation, useGoogleRegisterMutation} = userApiSlice

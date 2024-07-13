@@ -2,55 +2,35 @@ import React, { useState, useEffect } from 'react';
 import { getCredentials } from '../slices/userSlices/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEditUserMutation } from '../slices/userSlices/userApiSlice';
+import { useGetUserSlotQuery } from '../slices/slotSlices/slotApiSlice';
 import toast from 'react-hot-toast'
 import Spinner from './Spinner';
 import { useNavigate } from 'react-router-dom';
 
 const UserProfile = () => {
-  const [slot, setSlot] = useState([])
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [editUser] = useEditUserMutation()
+  const [editUser, {isLoading}] = useEditUserMutation()
+  const {data: slot, error, refetch} = useGetUserSlotQuery()
 
   const {userInfo} = useSelector(state => state.auth)
 
   useEffect(() => {
-    const handleSlot = async() => {
-      setIsLoading(true)
-      try {
-        if(userInfo) {
-          const res = await fetch('/api/slot/single-slot', {
-            method: 'POST',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({email: userInfo.email}),
-            credentials: "include"
-            
-          })
-          const data = await res.json()
-          setSlot(data)
-
-          setName(userInfo.name)
-          setEmail(userInfo.email)
-        }
-      } catch (error) {
-        console.log(error)
-      }finally {
-        setIsLoading(false)
-      }
-    }
-    handleSlot()
-  }, [userInfo])
+   if(userInfo || slot){
+    refetch()
+    setName(userInfo.name)
+    setEmail(userInfo.email)
+   }
+  }, [userInfo, slot])
   
 
   const handleSubmit = async(e) => {
     e.preventDefault()
-    setIsLoading(true)
     try {
           if(password === confirmPassword) {
             const data = {
@@ -70,9 +50,28 @@ const UserProfile = () => {
     } catch (err) {
       console.log(err)
       toast.error(err?.dat?.message || err.error)
-    }finally {
-      setIsLoading(false)
     }
+  }
+  if (error) {
+    return (
+      <div className="max-w-md mx-auto mt-8 p-4 bg-red-50 border-l-4 border-red-500 rounded-md shadow-md">
+        <div className="flex items-center">
+          <div className="flex-shrink-0">
+            <svg className="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+            </svg>
+          </div>
+          <div className="ml-3">
+            <h3 className="text-sm font-medium text-red-800">Error Occurred</h3>
+            <div className="mt-2 text-sm text-red-700">
+              <pre className="whitespace-pre-wrap break-words">
+                {JSON.stringify(error, null, 2)}
+              </pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return isLoading ? <Spinner/> :(
@@ -136,6 +135,7 @@ const UserProfile = () => {
         <div className="md:w-2/3 p-4">
           <h2 className="text-xl font-bold mb-4">My Sessions</h2>
           <table className="w-full border">
+            
             <thead>
               <tr>
                 <th className="px-4 py-2 text-sm">DATE & TIME</th>
@@ -144,31 +144,21 @@ const UserProfile = () => {
               </tr>
             </thead>
             <tbody>
-  {slot === null || slot.length === 0 ? (
-    <tr>
-      <td colSpan="3" className="text-center py-4">
-        You Don't have Any slot
-      </td>
-    </tr>
-  ) : Array.isArray(slot) ? ( 
-    slot.map((order) => (
-      <tr key={order._id} className="odd:bg-gray-100">
-        <td className="px-4 py-2 border text-sm">
-          {order.date} {order.time}
-        </td>
-        <td className="px-4 py-2 border text-sm">{order.recording_type}</td>
-        <td className="px-4 py-2 border text-sm">{order.session_duration}</td>
-      </tr>
-    ))
-  ) : (
-    <tr className="odd:bg-gray-100">
+  {isLoading ? <Spinner/> : slot && slot.length > 0 ? (
+   slot.map((order) => (
+    <tr key={order._id} className="odd:bg-gray-100">
       <td className="px-4 py-2 border text-sm">
-        {slot.date} {slot.time}
+        {order.date} {order.time}
       </td>
-      <td className="px-4 py-2 border text-sm">{slot.recording_type}</td>
-      <td className="px-4 py-2 border text-sm">{slot.session_duration}</td>
+      <td className="px-4 py-2 border text-sm">{order.recording_type}</td>
+      <td className="px-4 py-2 border text-sm">{order.session_duration}</td>
     </tr>
-  )}
+  ))
+  ): <tr>
+  <td colSpan="3" className="text-center py-4">
+    You Don't have Any slot
+  </td>
+</tr>}
 </tbody>
           </table>
         </div>

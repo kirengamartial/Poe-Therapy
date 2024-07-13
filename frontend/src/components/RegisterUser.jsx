@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCredentials } from '../slices/userSlices/authSlice';
-import { useRegisterMutation, useGoogleLoginMutation } from '../slices/userSlices/userApiSlice';
+import { useRegisterMutation, useGoogleRegisterMutation } from '../slices/userSlices/userApiSlice';
 import toast from 'react-hot-toast'
 import Spinner from './Spinner';
 import { FcGoogle } from 'react-icons/fc'; 
@@ -19,7 +19,7 @@ const RegisterUser = () => {
   const navigate = useNavigate();
 
   const [register] = useRegisterMutation();
-  const [googleRegister] = useGoogleLoginMutation();
+  const [googleRegister] = useGoogleRegisterMutation();
   const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -59,7 +59,10 @@ const RegisterUser = () => {
       setIsLoading(true);
       try {
         const accessToken = response.access_token;
-        const res = await googleRegister(accessToken).unwrap()
+        const res = await googleRegister({accessToken}).unwrap()
+        if(res.message === 'This email already exists') {
+          return toast.error(res.message)
+        }
         dispatch(getCredentials({...res}));
         toast.success('register successfully');
         navigate('/');
@@ -74,6 +77,7 @@ const RegisterUser = () => {
       console.log('Google Sign-In failed:', error);
     },  
   });
+
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-white">

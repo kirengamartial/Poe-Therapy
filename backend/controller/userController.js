@@ -81,52 +81,74 @@ const loginUser = async(req, res) => {
     }
 }
 
-const loginByGoogle = async(req, res) => {
+const registerByGoogle = async(req, res) => {
 try {
+
+  const { accessToken } = req.body;
+
+  const response = await fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${accessToken}`);
+  const getPayLoad = await response.json();
+
+  let user = await User.findOne({email: getPayLoad?.email});
+
+  if(user) {
+  return res.status(400).json({message: 'This email already exists'})
+  }
+
+  const userNameRes = await fetch('https://people.googleapis.com/v1/people/me?personFields=names', {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  const userObjName = await userNameRes.json();
+  const userName = userObjName.names[0]?.displayName;
+
+  const defaultPassword = Math.random().toString(36).slice(-8);
+
+  const newUser = await User.create({
+    name:userName,
+    email: getPayLoad?.email, 
+    password: defaultPassword
+  })
+
+  generateToken(res, newUser._id)
+return   res.status(200).json({
+        name: newUser.name, 
+        email: newUser.email,
+        isAdmin: newUser.isAdmin
+    })
+} catch (error) {
+    console.log(error)
+    res.status(500).json({message: error})
+}
+}
+
+const loginByGoogle = async(req, res) => {
+  try {
     const { accessToken } = req.body;
     const response = await fetch(`https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=${accessToken}`);
 
     const getPayLoad = await response.json();
 
     let user = await User.findOne({email: getPayLoad?.email});
-
     if(!user) {
-        const userNameRes = await fetch('https://people.googleapis.com/v1/people/me?personFields=names', {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-
-      const userObjName = await userNameRes.json();
-      const userName = userObjName.names[0]?.displayName;
-
-      const defaultPassword = Math.random().toString(36).slice(-8);
-
-      const newUser = await User.create({
-        name:userName,
-        email: getPayLoad?.email, 
-        password: defaultPassword
-      })
-
-      generateToken(res, newUser._id)
-   return   res.status(200).json({
-            name: newUser.name, 
-            email: newUser.email,
-            isAdmin: newUser.isAdmin
-        })
+      return res.status(400).json({message: 'You do not have an account Register first'})
     }
-
+    
     generateToken(res, user._id)
     return res.status(200).json({
             name: user.name,
             email: user.email,
             isAdmin: user.isAdmin
         })
-} catch (error) {
+
+  } catch (error) {
     console.log(error)
     res.status(500).json({message: error})
+  }
 }
-}
+
 
 const editUser = async(req, res) => {
     try {
@@ -276,6 +298,7 @@ export {
     registerUser,
     loginUser,
     loginByGoogle,
+    registerByGoogle,
     resetPasswordRequest,
     resetPassword,
     editUser,

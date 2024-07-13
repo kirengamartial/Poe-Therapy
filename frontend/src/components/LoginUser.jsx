@@ -49,14 +49,13 @@ const LoginUser = () => {
     setIsLoading(true);
     try {
       const accessToken = response.access_token
-      const res = await fetch('/api/users/login-google', {
-        method: "POST",
-        credentials: "include",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({accessToken})
-      })
-      const data = await res.json()
-      dispatch(getCredentials(data));
+      const res = await googleLogin({accessToken}).unwrap()
+
+      if(res.message === 'You do not have an account Register first'){
+        return toast.error('Register first Please')
+      }
+
+      dispatch(getCredentials({...res}));
       toast.success('login successfully');
       navigate('/');
     } catch (err) {
