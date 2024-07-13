@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaCalendarAlt } from 'react-icons/fa';
-import { createTime } from '../slices/timeSlices/timeSlice';
 import { usePostTimeMutation } from '../slices/timeSlices/timeApiSlice';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import Spinner from './Spinner';
@@ -14,7 +12,6 @@ const AddTime = () => {
   const [Time, setTime] = useState('');
   const [isLoading, setIsLoading] = useState(false)
 
-  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const [postDate] = usePostTimeMutation()
@@ -28,7 +25,6 @@ const AddTime = () => {
       const date = formattedDate.split(',').join('')
       const time = Time
       const res = await postDate({date, time}).unwrap()
-      dispatch(createTime({...res}))
       toast.success('Created Time successfully')
       navigate('/all-time')
     } catch (err) {

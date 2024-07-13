@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePostCommentMutation, useGetAllCommentQuery } from '../slices/commentSlices/commentApiSlice';
-import { setComment, createComment } from '../slices/commentSlices/commentSlice';
+import { setComment } from '../slices/commentSlices/commentSlice';
 import { useGetSingleBlogQuery } from '../slices/blogSlices/blogApiSlice';
 import Spinner from './Spinner';
 import { useParams } from 'react-router-dom';
@@ -69,7 +69,6 @@ const Blog = () => {
           description: comment
         }
         const res = await postComment(data).unwrap()
-        dispatch(createComment({...res}))
         refetch()
         toast.success('created successfully')
       } else {
