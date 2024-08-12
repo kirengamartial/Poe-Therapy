@@ -41,23 +41,33 @@ const GalleryPage = () => {
   return isLoading ? (
     <Spinner />
   ) : (
-    <section className="flex justify-center mb-24">
-      <div className="text-center w-10/12">
-        <h1 className="text-3xl mb-4 relative inline-block">Gallery</h1>
-        <div className="w-32 bg-orange-500 mx-auto mb-10" style={{ height: '2px' }}></div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-2 gap-x-4">
-          {photos.map((photo) => (
-            <div key={photo._id} className="w-full h-56 overflow-hidden">
-              <img
-                src={photo.image.secure_url}
-                alt="Gallery Image"
-                className="object-cover w-full h-full"
-              />
-            </div>
-          ))}
+<section className="flex justify-center mb-24">
+  <div className="text-center w-10/12">
+    <h1 className="text-3xl mb-4 relative inline-block">Gallery</h1>
+    <div className="w-32 bg-orange-500 mx-auto mb-10" style={{ height: '2px' }}></div>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      {photos.map((photo, index) => (
+        <div key={photo._id} className="w-full">
+          <img
+            src={photo.image.secure_url}
+            alt="Gallery Image"
+            className="w-full h-auto object-cover object-center"
+            style={{
+              ...(index === 5 && { marginTop: '-44.5%' }),
+              ...(index === 3 && { marginTop: '-121.6%' }),
+              ...(index === 6 && { marginTop: '-88%' }),
+              ...(index === 8 && { marginTop: '-12%' }),
+            }}
+          />
         </div>
-      </div>
-    </section>
+      ))}
+    </div>
+  </div>
+</section>
+
+  
+
+  
   );
 };
 
