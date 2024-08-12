@@ -1,21 +1,44 @@
-import React, {  useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setGallery } from '../slices/gallerySlices/gallerySlice';
 import { useGetImagesQuery } from '../slices/gallerySlices/galleryApiSlice';
 import Spinner from '../components/Spinner';
 
 const GalleryPage = () => {
-  const dispatch = useDispatch();
-
-  const {data: photos, isLoading, error, refetch} = useGetImagesQuery()
+  const [isMobile, setIsMobile] = useState(false);
+  const dispatch = useDispatch()
+  const { data: photos, isLoading, error, refetch } = useGetImagesQuery();
 
   useEffect(() => {
-    if(photos) {
-      refetch()
-      dispatch(setGallery(photos))
+    if (photos) {
+      refetch();
+      dispatch(setGallery(photos));
     }
-  }, [photos]);
+  }, [photos, refetch, dispatch]);
 
+ 
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const getOverlapStyle = (index) => {
+    if (isMobile) return {};
+    
+    switch (index) {
+      case 3: return { marginTop: '-121.6%' };
+      case 5: return { marginTop: '-44.5%' };
+      case 6: return { marginTop: '-88%' };
+      case 8: return { marginTop: '-12%' };
+      default: return {};
+    }
+  };
   if (error) {
     return (
       <div className="max-w-md mx-auto mt-8 p-4 bg-red-50 border-l-4 border-red-500 rounded-md shadow-md">
@@ -38,36 +61,25 @@ const GalleryPage = () => {
     );
   }
 
-  return isLoading ? (
-    <Spinner />
-  ) : (
-<section className="flex justify-center mb-24">
-  <div className="text-center w-10/12">
-    <h1 className="text-3xl mb-4 relative inline-block">Gallery</h1>
-    <div className="w-32 bg-orange-500 mx-auto mb-10" style={{ height: '2px' }}></div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-      {photos.map((photo, index) => (
-        <div key={photo._id} className="w-full">
-          <img
-            src={photo.image.secure_url}
-            alt="Gallery Image"
-            className="w-full h-auto object-cover object-center"
-            style={{
-              ...(index === 5 && { marginTop: '-44.5%' }),
-              ...(index === 3 && { marginTop: '-121.6%' }),
-              ...(index === 6 && { marginTop: '-88%' }),
-              ...(index === 8 && { marginTop: '-12%' }),
-            }}
-          />
+  return isLoading ? <Spinner /> :(
+    <section className="flex justify-center mb-24">
+      <div className="text-center w-10/12">
+        <h1 className="text-3xl mb-4 relative inline-block">Gallery</h1>
+        <div className="w-32 bg-orange-500 mx-auto mb-10" style={{ height: '2px' }}></div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {photos && photos.map((photo, index) => (
+            <div key={photo._id} className={`w-full ${isMobile ? 'mb-4' : ''}`}>
+              <img
+                src={photo.image.secure_url}
+                alt="Gallery Image"
+                className="w-full h-auto object-cover object-center"
+                style={getOverlapStyle(index)}
+              />
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-  </div>
-</section>
-
-  
-
-  
+      </div>
+    </section>
   );
 };
 
